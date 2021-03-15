@@ -1,27 +1,12 @@
 {
-    "name": "kuroxray-oci8repository",
+    "name": "kuro-x-ray/oci8repository",
     "type": "library",
-    "description": "Doctrine's OCI8 (Oracle) repository that supports cursors",
-    "keywords": [
-        "doctrine",
-        "oci8",
-        "oci",
-        "oracle",
-        "database",
-        "cursor"
-    ],
-    "license": "BSD-3-Clause",
-    "require": {
-        "php": ">= 7.4",
-        "ext-oci8": "*",
-        "doctrine/dbal": "^2.6"
-    },
-    "require-dev": {
-        "symfony/dotenv": "^5"
-    },
-    "autoload": {
-        "psr-4": {
-            "OCI8Repository\\": "src/"
+    "authors": [
+        {
+            "name": "Mazzola Gino",
+            "email": "mazzola.gino@gmail.com"
         }
-    }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
 }
