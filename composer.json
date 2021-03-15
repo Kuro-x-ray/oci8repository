@@ -7,6 +7,12 @@
             "email": "mazzola.gino@gmail.com"
         }
     ],
+    
     "minimum-stability": "0.0.1",
-    "require": {}
+    
+    "require": {
+        "php": ">= 7.4",
+        "ext-oci8": "*",
+        "doctrine/dbal": "^2.6"
+    }
 }
