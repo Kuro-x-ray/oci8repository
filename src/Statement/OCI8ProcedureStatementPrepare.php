@@ -61,7 +61,7 @@ class OCI8ProcedureStatementPrepare {
         return $this;
     }
 
-    public function prepare() {
+    public function prepare(): OCI8ProcedureStatement{
         return new OCI8ProcedureStatement($this->cursors, $this->current_statement, $this->repository);
     }
 

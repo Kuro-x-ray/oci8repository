@@ -15,14 +15,8 @@ use OCI8Repository\Statement\OCI8ProcedureStatementPrepare;
  * Abstract class that allows to execute procedures by calling them by their name and their parameters.
  * With compatibility of OCI8 cursors
  * 
- * Example: 
+ * Example:
  * 
- * $this->doProcedure('PACKAGE.procedure(:parameter_1, :parameter_2)')
- *      ->bindOut('parameter_1', $result)
- *      ->bindCursor('parameter_2', $cursor)
- *      ->execute()
- *      ->fetchCursor($cursor, 'table_identifier_name', $cursorResult)
- *      ->close();
  */
 abstract class OCI8BaseRepository extends ServiceEntityRepository {
 
@@ -31,7 +25,7 @@ abstract class OCI8BaseRepository extends ServiceEntityRepository {
     public function __construct(\Doctrine\Persistence\ManagerRegistry $registry, ParameterBagInterface $params) {
 
         if (!property_exists($this, 'support')) {
-            throw new BaseRepositorySupportClassException();
+            throw new OCI8BaseRepositorySupportClassException();
         } else {
             $rp = new \ReflectionProperty($this, 'support');
 
