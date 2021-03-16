@@ -66,30 +66,30 @@ class OCI8ProcedureStatementPrepare {
     public function with(ProcParametersInterface $parameters, array &$outs) {
 
         /* @var $procParam \App\Parameter\ProcParameter */
-        foreach ($parameters->toArray() as $procParam) {
+        foreach ($parameters->toArray() as $key => $procParam) {
 
-            if ($procParam->getBind() === ProcParameter::PARAM_IN) {
-                $this->bindValue(
-                        $procParam->getName(),
-                        $procParam->getValue(),
-                        $procParam->getType()
-                );
-            }
+            if ($key !== 'identifier') {
+                if ($procParam->getBind() === ProcParameter::PARAM_IN) {
+                    $this->bindValue(
+                            $procParam->getName(),
+                            $procParam->getValue(),
+                            $procParam->getType()
+                    );
+                }else if ($procParam->getBind() === ProcParameter::PARAM_OUT) {
 
-            if ($procParam->getBind() === ProcParameter::PARAM_OUT) {
+                    $outs[$procParam->getName()] = $this->getOutValue();
 
-                $outs[$procParam->getName()] = $this->getOutValue();
-
-                $this->bindOut(
-                        $procParam->getName(),
-                        $outs[$procParam->getName()]
-                );
-            }
-
-            if ($procParam->getBind() === ProcParameter::PARAM_CURSOR) {
-                $this->addCursor(
-                        $procParam->getName()
-                );
+                    $this->bindOut(
+                            $procParam->getName(),
+                            $outs[$procParam->getName()]
+                    );
+                }else if ($procParam->getBind() === ProcParameter::PARAM_CURSOR) {
+                    $this->addCursor(
+                            $procParam->getName()
+                    );
+                }else{
+                    // todo throw type bind exception
+                }
             }
         }
         return $this;
