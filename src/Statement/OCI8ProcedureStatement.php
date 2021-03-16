@@ -85,6 +85,13 @@ class OCI8ProcedureStatement {
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    protected function getOutValue() {
+        return uniqid();
+    }
+
     public function close() {
         $this->statement->closeCursor();
         $this->statement = null;

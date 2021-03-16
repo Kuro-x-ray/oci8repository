@@ -6,6 +6,8 @@ use Doctrine\DBAL\Connection;
 use OCI8Repository\Statement\OCI8ProcedureStatement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\ParameterType;
+use OCI8Repository\Parameter\ProcParametersInterface;
+use OCI8Repository\Parameter\ProcParameter;
 
 /**
  * Class that allows OCI8BaseRepository to build a Statement compatible with an Oracle procedure
@@ -61,7 +63,46 @@ class OCI8ProcedureStatementPrepare {
         return $this;
     }
 
-    public function prepare(): OCI8ProcedureStatement{
+    public function with(ProcParametersInterface $parameters, array &$outs) {
+
+        /* @var $procParam \App\Parameter\ProcParameter */
+        foreach ($parameters->toArray() as $procParam) {
+
+            if ($procParam->getBind() === ProcParameter::PARAM_IN) {
+                $this->bindValue(
+                        $procParam->getName(),
+                        $procParam->getValue(),
+                        $procParam->getType()
+                );
+            }
+
+            if ($procParam->getBind() === ProcParameter::PARAM_OUT) {
+
+                $outs[$procParam->getName()] = $this->getOutValue();
+
+                $this->bindOut(
+                        $procParam->getName(),
+                        $outs[$procParam->getName()]
+                );
+            }
+
+            if ($procParam->getBind() === ProcParameter::PARAM_CURSOR) {
+                $this->addCursor(
+                        $procParam->getName()
+                );
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getOutValue() {
+        return uniqid();
+    }
+
+    public function prepare(): OCI8ProcedureStatement {
         return new OCI8ProcedureStatement($this->cursors, $this->current_statement, $this->repository);
     }
 
